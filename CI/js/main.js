@@ -51,13 +51,17 @@ var update = function(){
     if(Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT)){
       Nakama.player.position.x = Math.min(640 - 78, Nakama.player.position.x + 10);
     }
+    if (i >= 1920){
+      i = 0;
+    }
 
     Nakama.game.add.sprite(0, i, 'background');
     Nakama.game.add.sprite(0, -1920 + i, 'background');
     i+= 2;
 
     Nakama.game.add.sprite(Nakama.player.position.x, Nakama.player.position.y, 'assets', 'Spaceship1-Player.png');
-  }
+
+}
 
 // before camera render (mostly for debug)
 var render = function(
