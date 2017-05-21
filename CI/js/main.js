@@ -32,27 +32,35 @@ var create = function(){
   Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
   Nakama.keyboard = Nakama.game.input.keyboard;
 
-  var background = Nakama.game.add.sprite(0, 0, 'background');
 
   Nakama.player = Nakama.game.add.sprite(300, 400, 'assets', 'Spaceship1-Player.png')
+  i = 0;
 }
 
-// update game state each frame
+
 var update = function(){
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.UP) && Nakama.player.position.y > 0){
-      Nakama.player.position.y -=10;
+    if(Nakama.keyboard.isDown(Phaser.Keyboard.UP)){
+      Nakama.player.position.y = Math.max(0, Nakama.player.position.y - 10);
     }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.DOWN) && Nakama.player.position.y < 880){
-      Nakama.player.position.y +=10;
+    if(Nakama.keyboard.isDown(Phaser.Keyboard.DOWN)){
+      Nakama.player.position.y = Math.min(960 - 78, Nakama.player.position.y + 10);
     }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.LEFT) && Nakama.player.position.x > 0){
-      Nakama.player.position.x -=10;
+    if(Nakama.keyboard.isDown(Phaser.Keyboard.LEFT)){
+      Nakama.player.position.x = Math.max(0, Nakama.player.position.x - 10);
     }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT) && Nakama.player.position.x < 560){
-      Nakama.player.position.x +=10;
+    if(Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+      Nakama.player.position.x = Math.min(640 - 78, Nakama.player.position.x + 10);
     }
 
-}
+    Nakama.game.add.sprite(0, i, 'background');
+    Nakama.game.add.sprite(0, -1920 + i, 'background');
+    i+= 2;
+
+    Nakama.game.add.sprite(Nakama.player.position.x, Nakama.player.position.y, 'assets', 'Spaceship1-Player.png');
+  }
 
 // before camera render (mostly for debug)
-var render = function(){}
+var render = function(
+){
+
+}
