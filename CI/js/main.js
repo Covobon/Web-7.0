@@ -1,4 +1,5 @@
 var Nakama = {};
+
 Nakama.configs = {};
 
 window.onload = function(){
@@ -24,6 +25,8 @@ var preload = function(){
   Nakama.game.time.advancedTiming = true;
 
   Nakama.game.load.atlasJSONHash('assets', 'Assets/assets.png', 'Assets/assets.json');
+
+
   Nakama.game.load.image('background', 'Assets/Map1.png');
 }
 
@@ -32,34 +35,31 @@ var create = function(){
   Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
   Nakama.keyboard = Nakama.game.input.keyboard;
 
+  var background = Nakama.game.add.sprite(0, 0,'background');
 
-  Nakama.player = Nakama.game.add.sprite(300, 400, 'assets', 'Spaceship1-Player.png')
-  i = 0;
+
+  Nakama.player = new ShipController(300, 400, 'Spaceship1-Player.png',{
+    up: Phaser.Keyboard.UP,
+    down: Phaser.Keyboard.DOWN,
+    left: Phaser.Keyboard.LEFT,
+    right: Phaser.Keyboard.RIGHT,
+    fire: Phaser.Keyboard.CONTROL,
+  });
+  Nakama.partner = new ShipController(500, 400, 'Spaceship1-Player.png'{
+    up: Phaser.Keyboard.W,
+    down: Phaser.Keyboard.S,
+    left: Phaser.Keyboard.A,
+    right: Phaser.Keyboard.D,
+    fire: Phaser.Keyboard.SPACEBAR,
+  });
 }
 
 
 var update = function(){
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.UP)){
-      Nakama.player.position.y = Math.max(0, Nakama.player.position.y - 10);
-    }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.DOWN)){
-      Nakama.player.position.y = Math.min(960 - 78, Nakama.player.position.y + 10);
-    }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.LEFT)){
-      Nakama.player.position.x = Math.max(0, Nakama.player.position.x - 10);
-    }
-    if(Nakama.keyboard.isDown(Phaser.Keyboard.RIGHT)){
-      Nakama.player.position.x = Math.min(640 - 78, Nakama.player.position.x + 10);
-    }
-    if (i >= 1920){
-      i = 0;
-    }
 
-    Nakama.game.add.sprite(0, i, 'background');
-    Nakama.game.add.sprite(0, -1920 + i, 'background');
-    i+= 2;
+    Nakama.player.update();
+    Nakama.partner.update();
 
-    Nakama.game.add.sprite(Nakama.player.position.x, Nakama.player.position.y, 'assets', 'Spaceship1-Player.png');
 
 }
 
