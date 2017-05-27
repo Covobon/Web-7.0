@@ -1,14 +1,18 @@
 var Nakama = {};
 
-Nakama.configs = {};
+Nakama.configs = {
+  PLAYER_SPEED: 10,
+  BACKGROUND_SPEED: 3
+};
+
 
 window.onload = function(){
   Nakama.game = new Phaser.Game(640,960,Phaser.AUTO,'',
     {
       preload: preload,
-      create: create,
-      update: update,
-      render: render
+      create : create,
+      update : update,
+      render : render
     }, false, false
   );
 }
@@ -26,6 +30,7 @@ var preload = function(){
 
   Nakama.game.load.atlasJSONHash('assets', 'Assets/assets.png', 'Assets/assets.json');
 
+  Nakama.game.load.image('bullet', 'Assets/Original Sprites/BulletType1.png');
 
   Nakama.game.load.image('background', 'Assets/Map1.png');
 }
@@ -33,24 +38,26 @@ var preload = function(){
 // initialize the game
 var create = function(){
   Nakama.game.physics.startSystem(Phaser.Physics.ARCADE);
+
   Nakama.keyboard = Nakama.game.input.keyboard;
 
-  var background = Nakama.game.add.sprite(0, 0,'background');
 
 
-  Nakama.player = new ShipController(300, 400, 'Spaceship1-Player.png',{
-    up: Phaser.Keyboard.UP,
-    down: Phaser.Keyboard.DOWN,
-    left: Phaser.Keyboard.LEFT,
-    right: Phaser.Keyboard.RIGHT,
-    fire: Phaser.Keyboard.CONTROL,
+  Nakama.background = Nakama.game.add.sprite(0, -960,'background');
+
+  Nakama.player = new ShipController(300, 400, 'Spaceship1-Player.png', {
+    UP    : Phaser.Keyboard.UP,
+    DOWN  : Phaser.Keyboard.DOWN,
+    LEFT  : Phaser.Keyboard.LEFT,
+    RIGHT : Phaser.Keyboard.RIGHT,
+    FIRE  : Phaser.Keyboard.CONTROL
   });
-  Nakama.partner = new ShipController(500, 400, 'Spaceship1-Player.png'{
-    up: Phaser.Keyboard.W,
-    down: Phaser.Keyboard.S,
-    left: Phaser.Keyboard.A,
-    right: Phaser.Keyboard.D,
-    fire: Phaser.Keyboard.SPACEBAR,
+  Nakama.partner = new ShipController(500, 400, 'Spaceship2-Player.png', {
+    UP    : Phaser.Keyboard.W,
+    DOWN  : Phaser.Keyboard.S,
+    LEFT  : Phaser.Keyboard.A,
+    RIGHT : Phaser.Keyboard.D,
+    FIRE  : Phaser.Keyboard.SPACEBAR
   });
 }
 
@@ -60,6 +67,10 @@ var update = function(){
     Nakama.player.update();
     Nakama.partner.update();
 
+    if (Nakama.background.position.y >= 0){
+      Nakama.background.position.y = -960;
+    }
+    Nakama.background.position.y += 2;
 
 }
 
