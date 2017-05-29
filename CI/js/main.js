@@ -45,19 +45,24 @@ var create = function(){
 
   Nakama.background = Nakama.game.add.sprite(0, -960,'background');
 
-  Nakama.player = new ShipController(300, 400, 'Spaceship1-Player.png', {
+  Nakama.bulletGroup = Nakama.game.add.physicsGroup();
+  Nakama.playerGroup = Nakama.game.add.physicsGroup();
+
+  Nakama.player = new ShipType1Controller(300, 400, 'Spaceship1-Player.png', {
     UP    : Phaser.Keyboard.UP,
     DOWN  : Phaser.Keyboard.DOWN,
     LEFT  : Phaser.Keyboard.LEFT,
     RIGHT : Phaser.Keyboard.RIGHT,
-    FIRE  : Phaser.Keyboard.CONTROL
+    FIRE  : Phaser.Keyboard.CONTROL,
+    cooldown: 0.3
   });
-  Nakama.partner = new ShipController(500, 400, 'Spaceship2-Player.png', {
+  Nakama.partner = new ShipType1Controller(500, 400, 'Spaceship2-Player.png', {
     UP    : Phaser.Keyboard.W,
     DOWN  : Phaser.Keyboard.S,
     LEFT  : Phaser.Keyboard.A,
     RIGHT : Phaser.Keyboard.D,
-    FIRE  : Phaser.Keyboard.SPACEBAR
+    FIRE  : Phaser.Keyboard.SPACEBAR,
+    cooldown: 0.3
   });
 }
 
