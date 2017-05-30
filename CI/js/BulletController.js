@@ -1,14 +1,17 @@
-class BulletController{
-  constructor(x, y, configs){
-    this.bullet = Nakama.bulletGroup.create(x, y, 'bullet');
-    //Nakama.game.physics.arcade.enable(this.bullet);
+class BulletController {
+  constructor (x, y, spriteName, configs){
+    this.sprite = Nakama.bulletGroup.create(x, y, 'assets', spriteName);
+    // this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
+    // Nakama.game.physics.arcade.enable(this.sprite);
+    this.sprite.checkWorldBounds = true;
+    this.sprite.outOfBoundsKill = true;
+    this.sprite.body.velocity = configs.direction.setMagnitude(Nakama.configs.BULLET_SPEED);
 
-    this.bullet.body.velocity.y -= 1000;
-    this.bullet.body.velocity = configs.direction.setMagnitude(1000);
-    this.bullet.anchor = new Phaser.Point(-0.5, 1);
+    this.sprite.angle = Phaser.Math.radToDeg(Phaser.Math.angleBetween(
+      0, 0,
+      configs.direction.x, configs.direction.y
+    )) + 90;
 
-  }
-  ban(){
-
+    this.sprite.anchor = new Phaser.Point(0.5,0.5);
   }
 }

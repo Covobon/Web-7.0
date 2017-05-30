@@ -1,48 +1,46 @@
-class ShipController{
-
+class ShipController {
   constructor(x, y, spriteName, configs){
-    //this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
     this.sprite = Nakama.playerGroup.create(x, y, 'assets', spriteName);
+    // this.sprite = Nakama.game.add.sprite(x, y, 'assets', spriteName);
+    // Nakama.game.physics.arcade.enable(this.sprite);
+
+    this.sprite.body.collideWorldBounds = true;
+    this.sprite.anchor = new Phaser.Point(0.5,0.5);
+
     this.configs = configs;
     this.timeSinceLastFire = 0;
   }
 
   update(){
-    if(Nakama.keyboard.isDown(this.configs.UP)){
-      this.sprite.position.y = Math.max(0, this.sprite.position.y - 10);
+    if(Nakama.keyboard.isDown(this.configs.up)){
+      this.sprite.body.velocity.y = -this.configs.speed;
     }
-    if(Nakama.keyboard.isDown(this.configs.DOWN)){
-      this.sprite.position.y = Math.min(960 - 78, this.sprite.position.y + 10);
+    else if(Nakama.keyboard.isDown(this.configs.down)){
+      this.sprite.body.velocity.y = this.configs.speed;
     }
-    if(Nakama.keyboard.isDown(this.configs.LEFT)){
-      this.sprite.position.x = Math.max(0, this.sprite.position.x - 10);
+    else{
+      this.sprite.body.velocity.y = 0;
     }
-    if(Nakama.keyboard.isDown(this.configs.RIGHT)){
-      this.sprite.position.x = Math.min(640 - 78, this.sprite.position.x + 10);
+
+    if(Nakama.keyboard.isDown(this.configs.left)){
+      this.sprite.body.velocity.x = -this.configs.speed;
     }
-    //throtting
+    else if(Nakama.keyboard.isDown(this.configs.right)){
+      this.sprite.body.velocity.x = this.configs.speed;
+    }
+    else{
+      this.sprite.body.velocity.x = 0;
+    }
+
+    // throtting
     this.timeSinceLastFire += Nakama.game.time.physicsElapsed;
-    if(Nakama.keyboard.isDown(this.configs.FIRE) && this.timeSinceLastFire > this.configs.cooldown){
-        this.fire();
-        this.timeSinceLastFire = 0;
+    if(Nakama.keyboard.isDown(this.configs.fire)
+        && this.timeSinceLastFire > this.configs.cooldown
+      ){
+      this.fire();
+      this.timeSinceLastFire = 0;
     }
   }
 
-
-  fire(){
-    this.createBullet(new Phaser.Point( 0, -1));
-    this.createBullet(new Phaser.Point( 1, -5));
-    this.createBullet(new Phaser.Point(-1, -5));
-    this.createBullet(new Phaser.Point( 1, -2));
-    this.createBullet(new Phaser.Point(-1, -2));
-  }
-
-  createBullet(direction){
-      new BulletController(
-        this.sprite.position.x,
-        this.sprite.position.y,{
-          direction: direction
-        }
-      );
-    }
+  fire(){}
 }
